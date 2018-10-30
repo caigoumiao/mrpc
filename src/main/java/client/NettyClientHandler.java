@@ -1,6 +1,6 @@
 package client;
 
-import Codec.RpcRequest;
+import Codec.RequestBody;
 import io.netty.channel.*;
 
 import java.util.concurrent.CountDownLatch;
@@ -39,7 +39,7 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<Object>
 
     //  todo 请求消息封装成Request对象
     // todo protostuff序列化编解码器
-    public Object sendMsg(RpcRequest req){
+    public Object sendMsg(RequestBody req){
 
         log.info("netty client handler send msg");
 

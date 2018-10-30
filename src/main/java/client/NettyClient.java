@@ -1,7 +1,9 @@
 package client;
 
+import Codec.MRpcDecoder;
 import Codec.MRpcEncoder;
-import Codec.RpcRequest;
+import Codec.RequestBody;
+import Codec.ResponseBody;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -36,7 +38,8 @@ public class NettyClient
                     {
                         ch.pipeline().addLast(new MRpcEncoder());
 //                        ch.pipeline().addLast(new LengthFieldPrepender(4));
-                        ch.pipeline().addLast(new ObjectDecoder(1024*1024, ClassResolvers.weakCachingConcurrentResolver(this.getClass().getClassLoader())));
+//                        ch.pipeline().addLast(new ObjectDecoder(1024*1024, ClassResolvers.weakCachingConcurrentResolver(this.getClass().getClassLoader())));
+                        ch.pipeline().addLast(new MRpcDecoder(ResponseBody.class));
                         ch.pipeline().addLast("clientHandler", new NettyClientHandler());
                     }
                 });
@@ -44,7 +47,7 @@ public class NettyClient
 //        future.channel().closeFuture().sync();
     }
 
-    public Object sendMsg(RpcRequest req){
+    public Object sendMsg(RequestBody req){
         log.info("netty client channel send msg");
 
         NettyClientHandler handler = future.channel().pipeline().get(NettyClientHandler.class);

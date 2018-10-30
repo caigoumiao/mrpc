@@ -1,11 +1,11 @@
 package client;
 
-import Codec.RpcRequest;
-import client.NettyClient;
+import Codec.RequestBody;
 
 import java.lang.reflect.Proxy;
 import java.net.InetSocketAddress;
 
+// todo 同一个类的连接缓存起来
 public class ServiceImporter<S>
 {
     public S importer(Class<?> serviceClass, InetSocketAddress addr){
@@ -16,7 +16,7 @@ public class ServiceImporter<S>
                 {
                     NettyClient nettyClient = new NettyClient();
                     nettyClient.connect(addr.getHostName(), addr.getPort());
-                    RpcRequest req = new RpcRequest();
+                    RequestBody req = new RequestBody();
                     req.setClassName(serviceClass.getName());
                     req.setMethodName(method.getName());
                     req.setParameterTypes(method.getParameterTypes());

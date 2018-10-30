@@ -1,6 +1,8 @@
 package server;
 
 import Codec.MRpcDecoder;
+import Codec.MRpcEncoder;
+import Codec.RequestBody;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
@@ -29,9 +31,10 @@ public class NettyServer
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception
                         {
-                            ch.pipeline().addLast(new ObjectEncoder());
+//                            ch.pipeline().addLast(new ObjectEncoder());
+                            ch.pipeline().addLast(new MRpcEncoder());
 //                            ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(169373290, 0 ,4, 0 ,4));
-                            ch.pipeline().addLast(new MRpcDecoder());
+                            ch.pipeline().addLast(new MRpcDecoder(RequestBody.class));
                             ch.pipeline().addLast(new MRpcHandler());
                         }
                     });

@@ -1,13 +1,13 @@
 package server;
 
-import Codec.RpcRequest;
+import Codec.RequestBody;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.lang.reflect.Method;
 import java.util.logging.Logger;
 
-public class MRpcHandler extends SimpleChannelInboundHandler<RpcRequest>
+public class MRpcHandler extends SimpleChannelInboundHandler<RequestBody>
 {
     private Logger log = Logger.getLogger(this.getClass().getName());
 
@@ -35,7 +35,7 @@ public class MRpcHandler extends SimpleChannelInboundHandler<RpcRequest>
     }
 
     @Override
-    protected void messageReceived(ChannelHandlerContext ctx , RpcRequest msg) throws Exception
+    protected void messageReceived(ChannelHandlerContext ctx , RequestBody msg) throws Exception
     {
         log.info("netty server channel receive msg");
 
