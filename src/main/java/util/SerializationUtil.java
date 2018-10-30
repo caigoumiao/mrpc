@@ -1,4 +1,4 @@
-package com.miao.mrpc.util;
+package util;
 
 import com.dyuproject.protostuff.LinkedBuffer;
 import com.dyuproject.protostuff.ProtostuffIOUtil;

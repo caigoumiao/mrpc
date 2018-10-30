@@ -1,4 +1,4 @@
-package com.miao.mrpc.util;
+package util;
 
 import lombok.Data;
 

@@ -1,6 +1,6 @@
-package com.miao.mrpc;
+package examples;
 
-import com.miao.mrpc.util.User;
+import util.User;
 
 public class TestServiceImpl implements TestService
 {
