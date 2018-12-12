@@ -1,6 +1,8 @@
 package examples;
 
 import client.ServiceImporter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import server.MRpcServer;
 import server.ServiceRegister;
 
@@ -8,6 +10,8 @@ import java.net.InetSocketAddress;
 
 public class RpcTest
 {
+    Logger logger= LoggerFactory.getLogger(this.getClass());
+
     public static void main(String[] args) throws InterruptedException
     {
         new Thread(() -> {
