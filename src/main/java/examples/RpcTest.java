@@ -1,7 +1,8 @@
 package examples;
 
 import client.ServiceImporter;
-import server.NettyServer;
+import server.MRpcServer;
+import server.ServiceRegister;
 
 import java.net.InetSocketAddress;
 
@@ -12,7 +13,8 @@ public class RpcTest
         new Thread(() -> {
             try
             {
-                new NettyServer().bind(9098);
+                ServiceRegister serviceRegister=new ServiceRegister("123.56.24.247:2182");
+                new MRpcServer("", serviceRegister).start();
             } catch (InterruptedException e)
             {
                 e.printStackTrace();

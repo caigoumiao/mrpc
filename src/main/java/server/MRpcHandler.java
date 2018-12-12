@@ -5,14 +5,22 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 import java.lang.reflect.Method;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class MRpcHandler extends SimpleChannelInboundHandler<RequestBody>
 {
     private Logger log = Logger.getLogger(this.getClass().getName());
 
+    private Map<String, Object> serviceImplMap;
+
+    MRpcHandler(Map<String, Object> serviceImplMap)
+    {
+        this.serviceImplMap=serviceImplMap;
+    }
+
     @Override
-    public void exceptionCaught(ChannelHandlerContext ctx , Throwable cause) throws Exception
+    public void exceptionCaught(ChannelHandlerContext ctx , Throwable cause)
     {
         cause.printStackTrace();
         log.severe(cause.getMessage());
@@ -39,7 +47,8 @@ public class MRpcHandler extends SimpleChannelInboundHandler<RequestBody>
     {
         log.info("netty server channel receive msg");
 
-        Class<?> service = Class.forName(msg.getClassName());
+        Object serviceImpl=serviceImplMap.get(msg.getClassName());
+        Class<?> service = serviceImpl.getClass();
         Method method = service.getMethod(msg.getMethodName(), msg.getParameterTypes());
         Object result = method.invoke(service.newInstance(), msg.getArgs());
         ctx.writeAndFlush(result);
