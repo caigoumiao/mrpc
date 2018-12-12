@@ -47,6 +47,12 @@
             <artifactId>kryo</artifactId>
             <version>4.0.0</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.sgroschupf/zkclient -->
+        <dependency>
+            <groupId>com.github.sgroschupf</groupId>
+            <artifactId>zkclient</artifactId>
+            <version>0.1</version>
+        </dependency>
     </dependencies>
 
     <build>

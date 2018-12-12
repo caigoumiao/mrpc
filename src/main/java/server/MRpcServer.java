@@ -14,10 +14,24 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.serialization.ObjectEncoder;
 import server.MRpcHandler;
 
-public class NettyServer
+import java.util.Scanner;
+
+public class MRpcServer
 {
-    public void bind(int port) throws InterruptedException
+    private String serverUrl;
+    public MRpcServer(String serverUrl){
+        this.serverUrl=serverUrl;
+    }
+
+    private void serviceRegister(){
+
+    }
+
+    public void bind() throws InterruptedException
     {
+        String[] url=serverUrl.split(":");
+        String host=url[0];
+        int port=Integer.parseInt(url[1]);
         EventLoopGroup boss = new NioEventLoopGroup();
         EventLoopGroup worker = new NioEventLoopGroup();
         ServerBootstrap serverBootstrap = new ServerBootstrap();
