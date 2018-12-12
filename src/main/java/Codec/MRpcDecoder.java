@@ -1,16 +1,18 @@
 package Codec;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import util.FstUtil;
 import util.SerializationUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 public class MRpcDecoder extends ByteToMessageDecoder
 {
-    private Logger log = Logger.getLogger(this.getClass().getName());
+    private Logger log = LoggerFactory.getLogger(this.getClass());
 
     private Class clazz;
 
@@ -19,12 +21,13 @@ public class MRpcDecoder extends ByteToMessageDecoder
     }
 
     @Override
-    protected void decode(ChannelHandlerContext ctx , ByteBuf in , List<Object> out) throws Exception
+    protected void decode(ChannelHandlerContext ctx , ByteBuf in , List<Object> out)
     {
-        log.info("netty server decode");
+        log.info("netty decode");
         int length = in.readInt();
+        log.info("tmp length="+length);
         byte[] tmp = new byte[length];
         in.readBytes(tmp);
-        out.add(SerializationUtil.deserialize(tmp, clazz));
+        out.add(FstUtil.deserialize(tmp));
     }
 }

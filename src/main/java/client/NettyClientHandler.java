@@ -2,15 +2,16 @@ package client;
 
 import Codec.RequestBody;
 import io.netty.channel.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.CountDownLatch;
-import java.util.logging.Logger;
 
 public class NettyClientHandler extends SimpleChannelInboundHandler<Object>
 {
     private Channel channel;
     private Object result;
-    private Logger log = Logger.getLogger(this.getClass().getName());
+    private Logger log = LoggerFactory.getLogger(this.getClass());
     private CountDownLatch latch = new CountDownLatch(1);
 
 
@@ -51,7 +52,6 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<Object>
             public void operationComplete(ChannelFuture future) throws Exception
             {
                 log.info("netty client receive msg from server");
-//                latch.countDown();
             }
         });
         try

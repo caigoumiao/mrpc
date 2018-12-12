@@ -12,14 +12,12 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.serialization.ClassResolvers;
-import io.netty.handler.codec.serialization.ObjectDecoder;
-
-import java.util.logging.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class NettyClient
 {
-    private Logger log = Logger.getLogger(this.getClass().getName());
+    private Logger log= LoggerFactory.getLogger(this.getClass());
 
     private ChannelFuture future;
     public void connect(String host, int port) throws InterruptedException

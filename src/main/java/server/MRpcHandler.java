@@ -3,14 +3,15 @@ package server;
 import Codec.RequestBody;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.Map;
-import java.util.logging.Logger;
 
 public class MRpcHandler extends SimpleChannelInboundHandler<RequestBody>
 {
-    private Logger log = Logger.getLogger(this.getClass().getName());
+    private Logger log = LoggerFactory.getLogger(this.getClass());
 
     private Map<String, Object> serviceImplMap;
 
@@ -23,7 +24,7 @@ public class MRpcHandler extends SimpleChannelInboundHandler<RequestBody>
     public void exceptionCaught(ChannelHandlerContext ctx , Throwable cause)
     {
         cause.printStackTrace();
-        log.severe(cause.getMessage());
+        log.error(cause.getMessage());
     }
 
     @Override

@@ -8,6 +8,10 @@ import util.Contants;
 
 import java.util.*;
 
+/**
+ * @author larry miao
+ * @date 2018-12-10
+ */
 public class ServiceRegister
 {
     private Logger log= LoggerFactory.getLogger(this.getClass());
@@ -22,6 +26,7 @@ public class ServiceRegister
     }
 
     public ServiceRegister(String zkUrl){
+        log.info("init zookeeper client");
         zkClient=new ZkClient(zkUrl);
     }
 
@@ -44,7 +49,7 @@ public class ServiceRegister
     }
 
     // todo 基于注解@MRpcService 查找要注册的服务
-    private List<String> serviceDiscovery()
+    private List<String> findServicesWithAnnotation()
     {
         List<String> services=Collections.singletonList("examples.TestService");
         log.info("Discoried servives : " + String.join(",",services));
@@ -55,10 +60,10 @@ public class ServiceRegister
 
     public void register(String serverUrl){
         addRootNode();
-        List<String> services=serviceDiscovery();
+        List<String> services=findServicesWithAnnotation();
         services.forEach(s -> {
             String providersNode = addServiceNode(s);
-            zkClient.createEphemeral(providersNode+serverUrl);
+            zkClient.createEphemeral(providersNode+"/"+serverUrl);
         });
         log.info("Register server["+serverUrl+"] to services["+String.join(",", services)+"]");
     }
