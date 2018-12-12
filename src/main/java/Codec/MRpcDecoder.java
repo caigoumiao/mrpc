@@ -25,7 +25,6 @@ public class MRpcDecoder extends ByteToMessageDecoder
     {
         log.info("netty decode");
         int length = in.readInt();
-        log.info("tmp length="+length);
         byte[] tmp = new byte[length];
         in.readBytes(tmp);
         out.add(FstUtil.deserialize(tmp));

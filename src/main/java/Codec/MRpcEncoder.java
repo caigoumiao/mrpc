@@ -19,7 +19,6 @@ public class MRpcEncoder extends MessageToByteEncoder
     {
         log.info("netty encode");
         byte[] tmp = FstUtil.serialize(msg);
-        log.info("tmp length="+tmp.length);
         out.writeInt(tmp.length);
         out.writeBytes(tmp);
     }

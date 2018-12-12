@@ -32,6 +32,7 @@ public class ServiceDiscovery
         log.info("");
         String providersNode= Contants.ZK_ROOT+"/"+serviceName+Contants.ZK_PROVIDER;
         List<String> servers=zkClient.getChildren(providersNode);
+        if(servers.size()==0) throw new IllegalStateException("There is no service provider for "+serviceName);
         // 默认负载均衡策略：随机
         int chosenServerId= (int) (System.currentTimeMillis()%servers.size());
         return servers.get(chosenServerId);
