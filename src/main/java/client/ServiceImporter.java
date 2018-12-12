@@ -37,6 +37,7 @@ public class ServiceImporter
 //        );
 //    }
 
+    // todo netty client 需要缓存一下
     /**
      * create proxy class for specified service
      * @param clazz service class
