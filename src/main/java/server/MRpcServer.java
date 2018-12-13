@@ -18,6 +18,10 @@ import server.MRpcHandler;
 
 import java.util.Scanner;
 
+/**
+ * @author larry miao
+ * @date 2018-11-11
+ */
 public class MRpcServer
 {
     private Logger log= LoggerFactory.getLogger(this.getClass());

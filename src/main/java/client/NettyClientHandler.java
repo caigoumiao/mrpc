@@ -7,6 +7,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.CountDownLatch;
 
+/**
+ * @author larry miao
+ * @date 2018-11-11
+ */
 public class NettyClientHandler extends SimpleChannelInboundHandler<Object>
 {
     private Channel channel;

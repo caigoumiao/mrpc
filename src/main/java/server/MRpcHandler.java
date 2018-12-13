@@ -9,6 +9,10 @@ import org.slf4j.LoggerFactory;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+/**
+ * @author larry miao
+ * @date 2018-11-11
+ */
 public class MRpcHandler extends SimpleChannelInboundHandler<RequestBody>
 {
     private Logger log = LoggerFactory.getLogger(this.getClass());
