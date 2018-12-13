@@ -1,5 +1,6 @@
 package client;
 
+import client.loadBalance.BalancingStrategy;
 import examples.TestService;
 import util.Contants;
 
