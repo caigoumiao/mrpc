@@ -1,6 +1,8 @@
 package server;
 
-import service.TestServiceImpl;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.I0Itec.zkclient.ZkClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +14,7 @@ import java.util.*;
  * @author larry miao
  * @date 2018-12-10
  */
-public class ServiceRegister
+public class ServiceRegister implements ApplicationContextAware
 {
     private Logger log= LoggerFactory.getLogger(this.getClass());
 
@@ -20,9 +22,17 @@ public class ServiceRegister
     // map serviceApi to serviceImpl
     private Map<String, Object> serviceImplMap = new HashMap<>();
 
+    private ApplicationContext applicationContext;
+
     public Map<String, Object> getServiceImplMap()
     {
         return serviceImplMap;
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException
+    {
+        this.applicationContext=applicationContext;
     }
 
     public ServiceRegister(String zkUrl){
@@ -48,19 +58,28 @@ public class ServiceRegister
         return serviceNode+Contants.ZK_PROVIDER;
     }
 
-    // todo 基于注解@MRpcService 查找要注册的服务
-    private List<String> findServicesWithAnnotation()
+    /**
+     * 基于注解 @MRpcService 查找需要暴露的服务
+     * @return
+     */
+    private Set<String> findServicesWithAnnotation()
     {
-        List<String> services=Collections.singletonList("api.TestService");
-        log.info("Discoried servives : " + String.join(",",services));
-        // 查找需要暴露的服务
-        serviceImplMap.put("api.TestService", new TestServiceImpl());
-        return services;
+        applicationContext.getBeansWithAnnotation(MRpcService.class)
+                .entrySet()
+                .forEach(entry -> {
+                    Object bean=entry.getValue();
+                    Class<?>[] interfaces=bean.getClass().getInterfaces();
+                    if(interfaces.length>0){
+                        serviceImplMap.put(interfaces[0].getName(), bean);
+                        log.info("Found service["+interfaces[0].getName()+"],Impl is ["+bean.getClass().getName()+"]");
+                    }
+                });
+        return serviceImplMap.keySet();
     }
 
     public void register(String serverUrl){
         addRootNode();
-        List<String> services=findServicesWithAnnotation();
+        Set<String> services=findServicesWithAnnotation();
         services.forEach(s -> {
             String providersNode = addServiceNode(s);
             zkClient.createEphemeral(providersNode+"/"+serverUrl);

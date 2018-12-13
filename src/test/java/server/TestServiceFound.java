@@ -3,18 +3,14 @@ package server;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import server.Config.ServerConfig;
 
-public class TestServerAnnotation
+public class TestServiceFound
 {
     public static void main(String[] args)
     {
         AnnotationConfigApplicationContext context=new AnnotationConfigApplicationContext(ServerConfig.class);
-        MRpcServer server=context.getBean(MRpcServer.class);
-        try
-        {
-            server.start();
-        } catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }
+        context.getBeansWithAnnotation(MRpcService.class).entrySet().forEach(e -> {
+            System.out.println("bean name:"+e.getKey());
+            System.out.println("bean class name:"+e.getValue().getClass().getInterfaces()[0].getName());
+        });
     }
 }
