@@ -1,6 +1,6 @@
 package server;
 
-import examples.TestServiceImpl;
+import service.TestServiceImpl;
 import org.I0Itec.zkclient.ZkClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,10 +51,10 @@ public class ServiceRegister
     // todo 基于注解@MRpcService 查找要注册的服务
     private List<String> findServicesWithAnnotation()
     {
-        List<String> services=Collections.singletonList("examples.TestService");
+        List<String> services=Collections.singletonList("api.TestService");
         log.info("Discoried servives : " + String.join(",",services));
         // 查找需要暴露的服务
-        serviceImplMap.put("examples.TestService", new TestServiceImpl());
+        serviceImplMap.put("api.TestService", new TestServiceImpl());
         return services;
     }
 

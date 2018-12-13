@@ -1,7 +1,6 @@
 package client;
 
-import client.loadBalance.BalancingStrategy;
-import examples.TestService;
+import api.TestService;
 import util.Contants;
 
 public class TestClient

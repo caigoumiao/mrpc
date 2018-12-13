@@ -22,6 +22,6 @@ public class TestServerRegister
         Thread.sleep(2000);
         ZkClient zkClient=new ZkClient("123.56.24.247:2182");
         zkClient.getChildren(Contants.ZK_ROOT).forEach(System.out::println);
-        zkClient.getChildren(Contants.ZK_ROOT+"/examples.TestService"+Contants.ZK_PROVIDER).forEach(System.out::println);
+        zkClient.getChildren(Contants.ZK_ROOT+"/api.TestService"+Contants.ZK_PROVIDER).forEach(System.out::println);
     }
 }

@@ -1,7 +1,12 @@
-package examples;
+package service;
 
+import api.TestService;
+import org.springframework.stereotype.Component;
+import server.MRpcService;
 import util.User;
 
+@Component
+@MRpcService
 public class TestServiceImpl implements TestService
 {
     @Override
