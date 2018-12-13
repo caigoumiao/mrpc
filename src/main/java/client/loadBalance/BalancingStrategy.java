@@ -3,6 +3,7 @@ package client.loadBalance;
 import java.util.List;
 
 /**
+ * 策略枚举
  * @author larry miao
  * @date 2018-12-12
  */
@@ -52,5 +53,6 @@ public enum BalancingStrategy
                 }
             };
 
+    // todo 如何实现其他几种策略，此抽象方法需进一步抽象
     public abstract int chosenItem(List<String> servers);
 }

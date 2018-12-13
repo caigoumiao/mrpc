@@ -38,13 +38,9 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<Object>
         latch.countDown();
     }
 
-    //  todo 请求消息封装成Request对象
-    // todo protostuff序列化编解码器
     public Object sendMsg(RequestBody req){
 
         log.info("netty client handler send msg");
-
-        // todo 请求消息封装成Bytebuf
 
         channel.writeAndFlush(req).addListener(new ChannelFutureListener()
         {

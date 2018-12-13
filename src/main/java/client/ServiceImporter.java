@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Proxy;
 import java.net.InetSocketAddress;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author larry miao
@@ -15,6 +17,8 @@ public class ServiceImporter
 {
     private Logger log= LoggerFactory.getLogger(this.getClass());
     private ServiceDiscovery serviceDiscovery;
+    private Map<String, Object> serviceProxyMap=new HashMap<>();
+    private Map<String, NettyClient> nettyClientMap=new HashMap<>();
     public ServiceImporter(ServiceDiscovery serviceDiscovery){
         this.serviceDiscovery=serviceDiscovery;
     }
@@ -38,6 +42,8 @@ public class ServiceImporter
 //    }
 
     // todo netty client 需要缓存一下
+    // todo netty client 什么时候停止，清理掉？
+    // todo proxy 缓存是否有必要？
     /**
      * create proxy class for specified service
      * @param clazz service class
@@ -45,19 +51,26 @@ public class ServiceImporter
      */
     public Object importService(Class<?> clazz){
         log.info("import service for "+clazz.getName());
-        //get server url of service provider
-        String serverUrl=serviceDiscovery.getServerUrlWithBalancing(clazz.getName());
-        String[] url=serverUrl.split(":");
-        String host=url[0];
-        int port = Integer.parseInt(url[1]);
-        log.info("get server url:"+serverUrl);
+        if(serviceProxyMap.containsKey(clazz.getName()))
+            return serviceProxyMap.get(clazz.getName());
         return  Proxy.newProxyInstance(
                 clazz.getClassLoader() ,
                 new Class<?>[] {clazz} ,
                 (proxy , method , args) ->
                 {
-                    NettyClient nettyClient = new NettyClient();
-                    nettyClient.connect(host, port);
+                    if(!nettyClientMap.containsKey(clazz.getName())){
+                        //get server url of service provider
+                        String serverUrl=serviceDiscovery.getServerUrlWithBalancing(clazz.getName());
+                        String[] url=serverUrl.split(":");
+                        String host=url[0];
+                        int port = Integer.parseInt(url[1]);
+                        log.info("get server url:"+serverUrl);
+
+                        NettyClient tmp = new NettyClient();
+                        tmp.connect(host, port);
+                        nettyClientMap.put(clazz.getName(), tmp);
+                    }
+                    NettyClient nettyClient=nettyClientMap.get(clazz.getName());
                     RequestBody req = new RequestBody();
                     req.setClassName(clazz.getName());
                     req.setMethodName(method.getName());

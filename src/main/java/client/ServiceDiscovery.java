@@ -28,7 +28,6 @@ public class ServiceDiscovery
         zkClient=new ZkClient(zkUrl);
     }
 
-    // todo 关于负载均衡策略的定义
     // todo server url 缓存一下 太慢了
     /**
      * return serverUrl of service provider with a Load Balancing Strategy

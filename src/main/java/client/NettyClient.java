@@ -42,11 +42,13 @@ public class NettyClient
                     }
                 });
         future = bootstrap.connect(host, port).sync();
-//        future.channel().closeFuture().sync();
+        log.info("netty client has connected.....");
+        future.channel().closeFuture().sync();
+        log.info("netty client closed......");
     }
 
     public Object sendMsg(RequestBody req){
-        log.info("netty client channel send msg");
+        log.info("netty client send msg");
 
         NettyClientHandler handler = future.channel().pipeline().get(NettyClientHandler.class);
         return handler.sendMsg(req);
