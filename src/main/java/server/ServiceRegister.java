@@ -65,13 +65,13 @@ public class ServiceRegister implements ApplicationContextAware
     private Set<String> findServicesWithAnnotation()
     {
         applicationContext.getBeansWithAnnotation(MRpcService.class)
-                .entrySet()
-                .forEach(entry -> {
-                    Object bean=entry.getValue();
-                    Class<?>[] interfaces=bean.getClass().getInterfaces();
-                    if(interfaces.length>0){
-                        serviceImplMap.put(interfaces[0].getName(), bean);
-                        log.info("Found service["+interfaces[0].getName()+"],Impl is ["+bean.getClass().getName()+"]");
+                .forEach((key , bean) ->
+                {
+                    Class<?>[] interfaces = bean.getClass().getInterfaces();
+                    if (interfaces.length > 0)
+                    {
+                        serviceImplMap.put(interfaces[0].getName() , bean);
+                        log.info("Found service[" + interfaces[0].getName() + "],Impl is [" + bean.getClass().getName() + "]");
                     }
                 });
         return serviceImplMap.keySet();
