@@ -40,6 +40,9 @@ public class ServiceRegister implements ApplicationContextAware
         zkClient=new ZkClient(zkUrl);
     }
 
+    /**
+     * 添加根节点 "/MRPC"
+     */
     private void addRootNode(){
         if(!zkClient.exists(Contants.ZK_ROOT)){
             zkClient.createPersistent(Contants.ZK_ROOT);
@@ -47,6 +50,11 @@ public class ServiceRegister implements ApplicationContextAware
         }
     }
 
+    /**
+     * 添加单个服务到节点下
+     * @param service 完整服务名
+     * @return
+     */
     private String addServiceNode(String service){
         String serviceNode=Contants.ZK_ROOT+"/"+service;
         if(!zkClient.exists(serviceNode)){
@@ -77,6 +85,10 @@ public class ServiceRegister implements ApplicationContextAware
         return serviceImplMap.keySet();
     }
 
+    /**
+     * 服务注册
+     * @param serverUrl 发布服务的地址
+     */
     public void register(String serverUrl){
         addRootNode();
         Set<String> services=findServicesWithAnnotation();
