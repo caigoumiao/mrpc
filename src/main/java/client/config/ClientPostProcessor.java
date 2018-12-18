@@ -27,6 +27,7 @@ public class ClientPostProcessor implements BeanPostProcessor
     public Object postProcessAfterInitialization(Object bean , String beanName) throws BeansException
     {
         log.info("Bean[" + beanName + "] initialized ...");
+
         Field[] fields = bean.getClass().getDeclaredFields();
         for (Field field : fields)
         {
@@ -37,7 +38,10 @@ public class ClientPostProcessor implements BeanPostProcessor
                 {
                     field.setAccessible(true);
                     Class<?> serviceClass = field.getType();
-                    field.set(bean , serviceImporter.importService(serviceClass));
+                    Object serviceProxy = serviceImporter.importService(serviceClass);
+                    field.set(bean , serviceProxy);
+
+                    log.info("Field[" + serviceClass.getName() + "] is being assigned to " + serviceProxy.getClass().getName());
                 } catch (IllegalAccessException e)
                 {
                     e.printStackTrace();
