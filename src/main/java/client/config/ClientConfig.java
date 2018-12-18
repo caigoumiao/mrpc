@@ -2,10 +2,8 @@ package client.config;
 
 import client.ServiceDiscovery;
 import client.ServiceImporter;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.*;
 
 /**
  * @author larry miao
@@ -13,12 +11,13 @@ import org.springframework.context.annotation.DependsOn;
  */
 @Configuration
 @ComponentScan("client")
+@PropertySource("client.properties")
 public class ClientConfig
 {
     @Bean
-    public ServiceDiscovery serviceDiscovery()
+    public ServiceDiscovery serviceDiscovery(@Value("${zookeeper.url}") String zkUrl)
     {
-        return new ServiceDiscovery("");
+        return new ServiceDiscovery(zkUrl);
     }
 
     @Bean
