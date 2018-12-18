@@ -42,6 +42,7 @@ public class ClientPostProcessor implements BeanPostProcessor, ApplicationContex
             {
                 try
                 {
+                    //
                     if (serviceImporter == null)
                     {
                         serviceImporter = applicationContext.getBean(ServiceImporter.class);
