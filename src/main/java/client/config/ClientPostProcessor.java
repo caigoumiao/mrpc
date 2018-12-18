@@ -38,7 +38,8 @@ public class ClientPostProcessor implements BeanPostProcessor
                 try
                 {
                     field.setAccessible(true);
-                    field.set(bean , null);
+                    Class<?> serviceClass = field.getType();
+                    field.set(bean , serviceImporter.importService(serviceClass));
                 } catch (IllegalAccessException e)
                 {
                     e.printStackTrace();
