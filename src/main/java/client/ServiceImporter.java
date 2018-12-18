@@ -67,6 +67,7 @@ public class ServiceImporter
                         int port = Integer.parseInt(url[1]);
                         log.info("get server url:"+serverUrl);
 
+                        // todo netty client 阻塞
                         NettyClient tmp = new NettyClient();
                         tmp.connect(host, port);
                         nettyClientMap.put(clazz.getName(), tmp);
@@ -77,6 +78,7 @@ public class ServiceImporter
                     req.setMethodName(method.getName());
                     req.setParameterTypes(method.getParameterTypes());
                     req.setArgs(args);
+                    log.info("nettyClient begin to sendMsg");
                     return nettyClient.sendMsg(req);
                 }
         );

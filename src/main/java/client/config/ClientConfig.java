@@ -14,8 +14,11 @@ import org.springframework.context.annotation.*;
 @PropertySource("client.properties")
 public class ClientConfig
 {
+    @Value("123.56.24.247:2182")
+    private String zkUrl;
+
     @Bean
-    public ServiceDiscovery serviceDiscovery(@Value("${zookeeper.url}") String zkUrl)
+    public ServiceDiscovery serviceDiscovery()
     {
         return new ServiceDiscovery(zkUrl);
     }
@@ -31,4 +34,5 @@ public class ClientConfig
     {
         return new ClientPostProcessor(serviceImporter);
     }
+
 }
