@@ -14,7 +14,7 @@ import org.springframework.context.annotation.*;
 @PropertySource("client.properties")
 public class ClientConfig
 {
-    @Value("123.56.24.247:2182")
+    @Value("${zk.url}")
     private String zkUrl;
 
     @Bean
@@ -28,11 +28,4 @@ public class ClientConfig
     {
         return new ServiceImporter(serviceDiscovery);
     }
-
-    @Bean
-    public ClientPostProcessor clientPostProcessor(ServiceImporter serviceImporter)
-    {
-        return new ClientPostProcessor(serviceImporter);
-    }
-
 }
