@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * @date 2018-12-14
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
+@Target({ElementType.FIELD})
 public @interface MRpcInjection
 {
 }
