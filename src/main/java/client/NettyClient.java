@@ -47,8 +47,9 @@ public class NettyClient
                 });
         future = bootstrap.connect(host, port).sync();
         log.info("netty client has connected.....");
-        future.channel().closeFuture().sync();
-        log.info("netty client closed......");
+        // todo netty client 什么时候close?
+//        future.channel().closeFuture().sync();
+//        log.info("netty client closed......");
     }
 
     public Object sendMsg(RequestBody req){
