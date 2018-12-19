@@ -3,7 +3,6 @@ package Codec;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import util.FstUtil;
-import util.SerializationUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
