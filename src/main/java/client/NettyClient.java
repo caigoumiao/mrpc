@@ -41,7 +41,7 @@ public class NettyClient
                         ch.pipeline().addLast(new MRpcEncoder());
 //                        ch.pipeline().addLast(new LengthFieldPrepender(4));
 //                        ch.pipeline().addLast(new ObjectDecoder(1024*1024, ClassResolvers.weakCachingConcurrentResolver(this.getClass().getClassLoader())));
-                        ch.pipeline().addLast(new MRpcDecoder(ResponseBody.class));
+                        ch.pipeline().addLast(new MRpcDecoder());
                         ch.pipeline().addLast("clientHandler", new NettyClientHandler());
                     }
                 });

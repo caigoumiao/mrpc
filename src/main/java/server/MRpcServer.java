@@ -51,7 +51,7 @@ public class MRpcServer
 //                            ch.pipeline().addLast(new ObjectEncoder());
                         ch.pipeline().addLast(new MRpcEncoder());
 //                            ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(169373290, 0 ,4, 0 ,4));
-                        ch.pipeline().addLast(new MRpcDecoder(RequestBody.class));
+                        ch.pipeline().addLast(new MRpcDecoder());
                         ch.pipeline().addLast(new MRpcHandler(serviceRegister.getServiceImplMap()));
                     }
                 });

@@ -9,15 +9,13 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
 
+/**
+ * @author larry miao
+ * @date 2018-11-11
+ */
 public class MRpcDecoder extends ByteToMessageDecoder
 {
     private Logger log = LoggerFactory.getLogger(this.getClass());
-
-    private Class clazz;
-
-    public MRpcDecoder(Class c){
-        this.clazz = c;
-    }
 
     @Override
     protected void decode(ChannelHandlerContext ctx , ByteBuf in , List<Object> out)

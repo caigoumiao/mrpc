@@ -1,11 +1,13 @@
 package server;
 
 import Codec.RequestBody;
+import Codec.ResponseBody;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
@@ -48,14 +50,27 @@ public class MRpcHandler extends SimpleChannelInboundHandler<RequestBody>
     }
 
     @Override
-    protected void messageReceived(ChannelHandlerContext ctx , RequestBody msg) throws Exception
+    protected void messageReceived(ChannelHandlerContext ctx , RequestBody msg)
     {
         log.info("netty server channel receive msg");
 
         Object serviceImpl=serviceImplMap.get(msg.getClassName());
         Class<?> service = serviceImpl.getClass();
-        Method method = service.getMethod(msg.getMethodName(), msg.getParameterTypes());
-        Object result = method.invoke(service.newInstance(), msg.getArgs());
-        ctx.writeAndFlush(result);
+        Object resultValue = null;
+        String errorMessage = null;
+        try
+        {
+            Method method = service.getMethod(msg.getMethodName() , msg.getParameterTypes());
+            resultValue = method.invoke(serviceImpl , msg.getArgs());
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e)
+        {
+            errorMessage = e.getMessage();
+        }
+
+        // 将返回值封装成响应结果
+        ResponseBody response = new ResponseBody();
+        response.setError(errorMessage);
+        response.setBody(resultValue);
+        ctx.writeAndFlush(response);
     }
 }

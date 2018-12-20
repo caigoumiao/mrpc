@@ -19,7 +19,6 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<Object>
     private Logger log = LoggerFactory.getLogger(this.getClass());
     private CountDownLatch latch = new CountDownLatch(1);
 
-
     @Override
     public void channelRegistered(ChannelHandlerContext ctx) throws Exception
     {

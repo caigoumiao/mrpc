@@ -12,6 +12,13 @@ import java.io.Serializable;
 @Data
 public class ResponseBody implements Serializable
 {
-    private String msg;
+    /**
+     * 记录请求报错信息
+     */
+    private String error;
+
+    /**
+     * 记录请求返回结果
+     */
     private Object body;
 }
