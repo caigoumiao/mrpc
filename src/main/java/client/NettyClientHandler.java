@@ -36,7 +36,7 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<Object>
     }
 
     @Override
-    protected void messageReceived(ChannelHandlerContext ctx , Object msg) throws Exception
+    protected void messageReceived(ChannelHandlerContext ctx , Object msg)
     {
         log.info("netty client channel receive msg");
         this.result = (ResponseBody) msg;
@@ -51,7 +51,7 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<Object>
         channel.writeAndFlush(req).addListener(new ChannelFutureListener()
         {
             @Override
-            public void operationComplete(ChannelFuture future) throws Exception
+            public void operationComplete(ChannelFuture future)
             {
                 log.info("netty client receive msg from server");
             }

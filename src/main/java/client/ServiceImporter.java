@@ -45,7 +45,7 @@ public class ServiceImporter
 
     // todo netty client 需要缓存一下
     // todo netty client 什么时候停止，清理掉？
-    // todo proxy 缓存是否有必要？
+    // todo proxy 缓存是否有必要？不能缓存
     /**
      * create proxy class for specified service
      * @param clazz service class
@@ -53,8 +53,8 @@ public class ServiceImporter
      */
     public Object importService(Class<?> clazz){
         log.info("import service for "+clazz.getName());
-        if(serviceProxyMap.containsKey(clazz.getName()))
-            return serviceProxyMap.get(clazz.getName());
+//        if(serviceProxyMap.containsKey(clazz.getName()))
+//            return serviceProxyMap.get(clazz.getName());
         return  Proxy.newProxyInstance(
                 clazz.getClassLoader() ,
                 new Class<?>[] {clazz} ,
