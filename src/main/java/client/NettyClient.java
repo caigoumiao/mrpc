@@ -52,6 +52,7 @@ public class NettyClient
 //        log.info("netty client closed......");
     }
 
+    // todo 改为异步回调形式
     public Object sendMsg(RequestBody req){
         log.info("netty client send msg");
 
