@@ -19,7 +19,6 @@ public class ServiceImporter
 {
     private Logger log= LoggerFactory.getLogger(this.getClass());
     private ServiceDiscovery serviceDiscovery;
-    private Map<String, Object> serviceProxyMap=new HashMap<>();
     private Map<String, NettyClient> nettyClientMap=new HashMap<>();
     public ServiceImporter(ServiceDiscovery serviceDiscovery){
         this.serviceDiscovery=serviceDiscovery;
@@ -44,7 +43,7 @@ public class ServiceImporter
 //    }
 
     // todo netty client 需要缓存一下
-    // todo netty client 什么时候停止，清理掉？设置一个超时清理？
+    // todo netty client 什么时候停止，清理掉？设置一个超时清理？(清理连接，并不是清理nettyClient)
     // todo proxy 缓存是否有必要？不能缓存
     /**
      * create proxy class for specified service
@@ -53,8 +52,7 @@ public class ServiceImporter
      */
     public Object importService(Class<?> clazz){
         log.info("import service for "+clazz.getName());
-//        if(serviceProxyMap.containsKey(clazz.getName()))
-//            return serviceProxyMap.get(clazz.getName());
+
         return  Proxy.newProxyInstance(
                 clazz.getClassLoader() ,
                 new Class<?>[] {clazz} ,
