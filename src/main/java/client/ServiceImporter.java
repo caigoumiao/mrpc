@@ -1,6 +1,7 @@
 package client;
 
 import Codec.RequestBody;
+import Codec.ResponseBody;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,7 +80,10 @@ public class ServiceImporter
                     req.setParameterTypes(method.getParameterTypes());
                     req.setArgs(args);
                     log.info("nettyClient begin to sendMsg");
-                    return nettyClient.sendMsg(req);
+
+                    // get result from ResponseBody
+                    ResponseBody response = (ResponseBody) nettyClient.sendMsg(req);
+                    return response.getBody();
                 }
         );
     }

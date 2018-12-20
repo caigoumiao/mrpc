@@ -1,6 +1,7 @@
 package client;
 
 import Codec.RequestBody;
+import Codec.ResponseBody;
 import io.netty.channel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +16,7 @@ import java.util.concurrent.CountDownLatch;
 public class NettyClientHandler extends SimpleChannelInboundHandler<Object>
 {
     private Channel channel;
-    private Object result;
+    private ResponseBody result;
     private Logger log = LoggerFactory.getLogger(this.getClass());
     private CountDownLatch latch = new CountDownLatch(1);
 
@@ -38,11 +39,12 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<Object>
     protected void messageReceived(ChannelHandlerContext ctx , Object msg) throws Exception
     {
         log.info("netty client channel receive msg");
-        this.result = msg;
+        this.result = (ResponseBody) msg;
         latch.countDown();
     }
 
-    public Object sendMsg(RequestBody req){
+    public ResponseBody sendMsg(RequestBody req)
+    {
 
         log.info("netty client handler send msg");
 
