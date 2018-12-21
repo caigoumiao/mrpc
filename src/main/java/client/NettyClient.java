@@ -53,7 +53,8 @@ public class NettyClient
     }
 
     // todo 改为异步回调形式
-    public Object sendMsg(RequestBody req){
+    public ResponseBody sendMsg(RequestBody req)
+    {
         log.info("netty client send msg");
 
         NettyClientHandler handler = future.channel().pipeline().get(NettyClientHandler.class);

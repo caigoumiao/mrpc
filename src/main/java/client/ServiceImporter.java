@@ -80,7 +80,7 @@ public class ServiceImporter
                     log.info("nettyClient begin to sendMsg");
 
                     // get result from ResponseBody
-                    ResponseBody response = (ResponseBody) nettyClient.sendMsg(req);
+                    ResponseBody response = nettyClient.sendMsg(req);
                     return response.getBody();
                 }
         );
