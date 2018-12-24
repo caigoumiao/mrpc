@@ -24,24 +24,6 @@ public class ServiceImporter
         this.serviceDiscovery=serviceDiscovery;
     }
 
-//    public S importer(Class<?> serviceClass, InetSocketAddress addr){
-//        return (S) Proxy.newProxyInstance(
-//                serviceClass.getClassLoader() ,
-//                new Class<?>[] {serviceClass.getInterfaces()[0]} ,
-//                (proxy , method , args) ->
-//                {
-//                    NettyClient nettyClient = new NettyClient();
-//                    nettyClient.connect(addr.getHostName(), addr.getPort());
-//                    RequestBody req = new RequestBody();
-//                    req.setClassName(serviceClass.getName());
-//                    req.setMethodName(method.getName());
-//                    req.setParameterTypes(method.getParameterTypes());
-//                    req.setArgs(args);
-//                    return nettyClient.sendMsg(req);
-//                }
-//        );
-//    }
-
     // todo netty client 需要缓存一下
     // todo netty client 什么时候停止，清理掉？设置一个超时清理？(清理连接，并不是清理nettyClient)
     // todo proxy 缓存是否有必要？不能缓存
