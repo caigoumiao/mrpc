@@ -10,6 +10,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 /**
@@ -37,9 +38,11 @@ public class ClientPostProcessor implements BeanPostProcessor, ApplicationContex
         Field[] fields = bean.getClass().getDeclaredFields();
         for (Field field : fields)
         {
+            Annotation injectAnnotation = field.getAnnotation(MRpcInjection.class);
             // 当字段被 @MRpcInjection 注解时，为此字段自动注入服务代理类
-            if (field.getAnnotation(MRpcInjection.class) != null)
+            if (injectAnnotation != null)
             {
+                // todo 解析注解上设置的信息
                 try
                 {
                     //
