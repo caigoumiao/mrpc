@@ -53,7 +53,7 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<Object>
             @Override
             public void operationComplete(ChannelFuture future)
             {
-                log.info("netty client receive msg from server");
+                log.info("netty client finish send msg");
             }
         });
         try
