@@ -53,6 +53,8 @@ public class ClientPostProcessor implements BeanPostProcessor, ApplicationContex
                 }
                 Class<?> serviceClass = field.getType();
                 // todo 解析注解上设置的信息
+                log.info("Resolving attributes of annotation[" + injectAnnotation.getClass() + "]");
+
                 Map<String, Object> annotationAttrs = AnnotationUtils.getAnnotationAttributes(injectAnnotation);
                 String keyName = beanName + "-" + serviceClass.getName();
                 serviceImporter.addServiceInjectProp(keyName , annotationAttrs);
@@ -60,7 +62,7 @@ public class ClientPostProcessor implements BeanPostProcessor, ApplicationContex
                 {
 
                     field.setAccessible(true);
-                    Object serviceProxy = serviceImporter.importService(serviceClass);
+                    Object serviceProxy = serviceImporter.importService(serviceClass , beanName);
                     field.set(bean , serviceProxy);
 
                     log.info("Field[" + serviceClass.getName() + "] is being assigned to " + serviceProxy.getClass().getName());

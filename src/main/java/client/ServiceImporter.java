@@ -32,8 +32,7 @@ public class ServiceImporter
     /**
      * 实现服务的每一个注入都可以灵活的设置属性
      *
-     * @param key   由调用类的类名+service 类名组合而成
-     *              例如：向TopService 中注入TestService 服务，则key 为client.config.TopService-api.TestService
+     * @param key   由beanName+"-"+service 类名组合而成
      * @param attrs Map<String, Object> 属性列表（属性名-> String，属性值-> Object）
      */
     public void addServiceInjectProp(String key , Map<String, Object> attrs)
@@ -41,6 +40,7 @@ public class ServiceImporter
         if (serviceInjectPropMap.containsKey(key))
             log.warn("Duplicate key[" + key + "] occurred !");
         serviceInjectPropMap.put(key , attrs);
+        log.info("add injectProp. key=" + key + ", attrs=" + attrs);
     }
 
     // todo netty client 什么时候停止，清理掉？设置一个超时清理？(清理连接，并不是清理nettyClient)
@@ -51,7 +51,7 @@ public class ServiceImporter
      * @param clazz service class
      * @return proxy of service
      */
-    public Object importService(Class<?> clazz)
+    public Object importService(Class<?> clazz , String beanName)
     {
         log.info("import service for " + clazz.getName());
 
@@ -83,7 +83,9 @@ public class ServiceImporter
                     log.info("nettyClient begin to sendMsg");
 
                     // get result from ResponseBody
-                    ResponseBody response = nettyClient.sendMsg(req);
+                    String keyName = beanName + "-" + clazz.getName();
+                    Map<String, Object> attrs = serviceInjectPropMap.get(keyName);
+                    ResponseBody response = nettyClient.sendMsg(req , attrs);
                     return response.getBody();
                 }
         );

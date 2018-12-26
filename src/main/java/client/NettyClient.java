@@ -15,6 +15,7 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -55,13 +56,23 @@ public class NettyClient
     }
 
     // todo 改为异步回调形式
-    public ResponseBody sendMsg(RequestBody req) throws TimeoutException
+
+    /**
+     * 向netty 服务器发送请求
+     *
+     * @param req   请求消息体
+     * @param attrs 请求发送的参数配置
+     * @return 消息响应体
+     * @throws TimeoutException 响应超时异常
+     */
+    public ResponseBody sendMsg(RequestBody req , Map<String, Object> attrs) throws TimeoutException
     {
         log.info("netty client send msg");
 
         NettyClientHandler handler = future.channel().pipeline().get(NettyClientHandler.class);
 
-        // todo 向服务端发送请求前织入一些配置，例如配置
-        return handler.sendMsg(req);
+        // todo 向服务端发送请求前织入一些配置，例如timeout
+        // todo 属性名交给一些常量去管理
+        return handler.sendMsg(req , (Long) attrs.get("timeOut"));
     }
 }
