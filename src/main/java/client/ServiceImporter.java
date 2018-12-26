@@ -82,9 +82,11 @@ public class ServiceImporter
                     req.setArgs(args);
                     log.info("nettyClient begin to sendMsg");
 
-                    // get result from ResponseBody
+                    // 获取注入服务的配置参数
                     String keyName = beanName + "-" + clazz.getName();
                     Map<String, Object> attrs = serviceInjectPropMap.get(keyName);
+
+                    // 发送消息
                     ResponseBody response = nettyClient.sendMsg(req , attrs);
                     return response.getBody();
                 }

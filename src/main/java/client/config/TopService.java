@@ -12,7 +12,7 @@ import util.User;
 @Component
 public class TopService
 {
-    @MRpcInjection(timeOut = 3000)
+    @MRpcInjection(timeOut = 1000)
     private TestService testService;
 
     public void callTestService()

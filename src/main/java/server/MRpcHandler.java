@@ -71,6 +71,15 @@ public class MRpcHandler extends SimpleChannelInboundHandler<RequestBody>
         ResponseBody response = new ResponseBody();
         response.setError(errorMessage);
         response.setBody(resultValue);
+
+        // 模拟服务响应时延2000 ms
+        try
+        {
+            Thread.sleep(2000);
+        } catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
         ctx.writeAndFlush(response);
     }
 }
