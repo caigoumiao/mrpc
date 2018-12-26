@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.stereotype.Component;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.util.Map;
 
 /**
  * @author larry miao
@@ -44,18 +46,20 @@ public class ClientPostProcessor implements BeanPostProcessor, ApplicationContex
             // 当字段被 @MRpcInjection 注解时，为此字段自动注入服务代理类
             if (injectAnnotation != null)
             {
+                // todo 如何把bean 注入BeanPostProcessor?
+                if (serviceImporter == null)
+                {
+                    serviceImporter = applicationContext.getBean(ServiceImporter.class);
+                }
+                Class<?> serviceClass = field.getType();
                 // todo 解析注解上设置的信息
-                injectAnnotation.timeOut();
+                Map<String, Object> annotationAttrs = AnnotationUtils.getAnnotationAttributes(injectAnnotation);
+                String keyName = beanName + "-" + serviceClass.getName();
+                serviceImporter.addServiceInjectProp(keyName , annotationAttrs);
                 try
                 {
-                    //
-                    if (serviceImporter == null)
-                    {
-                        serviceImporter = applicationContext.getBean(ServiceImporter.class);
-                    }
 
                     field.setAccessible(true);
-                    Class<?> serviceClass = field.getType();
                     Object serviceProxy = serviceImporter.importService(serviceClass);
                     field.set(bean , serviceProxy);
 

@@ -21,8 +21,20 @@ public class ServiceImporter
     private Logger log= LoggerFactory.getLogger(this.getClass());
     private ServiceDiscovery serviceDiscovery;
     private Map<String, NettyClient> nettyClientMap=new HashMap<>();
+
+    // key 是由调用类的类名+service 类名组合而成
+    // 例如：向TopService 中注入TestService 服务，则key 为client.config.TopService-api.TestService
+    // 实现服务的每一个注入都可以灵活的设置属性
+    public Map<String, Map<String, Object>> serviceInjectPropMap = new HashMap<>();
+
     public ServiceImporter(ServiceDiscovery serviceDiscovery){
         this.serviceDiscovery=serviceDiscovery;
+    }
+
+    public void addServiceInjectProp(String key , Map<String, Object> attrs)
+    {
+        if (serviceInjectPropMap.containsKey(key))
+            log.warn("Duplicate service ");
     }
 
     // todo netty client 什么时候停止，清理掉？设置一个超时清理？(清理连接，并不是清理nettyClient)
