@@ -20,7 +20,7 @@ public class TopService
         User u = testService.getUser(21);
         System.out.println(u);
 
-        String s = testService.hello("miao");
-        System.out.println(s);
+//        String s = testService.hello("miao");
+//        System.out.println(s);
     }
 }

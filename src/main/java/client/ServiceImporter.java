@@ -63,16 +63,8 @@ public class ServiceImporter
                     log.info("nettyClient begin to sendMsg");
 
                     // get result from ResponseBody
-                    ResponseBody response = null;
-                    try
-                    {
-                        response = nettyClient.sendMsg(req);
-                        return response.getBody();
-                    } catch (TimeoutException e)
-                    {
-                        e.printStackTrace();
-                        return null;
-                    }
+                    ResponseBody response = nettyClient.sendMsg(req);
+                    return response.getBody();
                 }
         );
     }
