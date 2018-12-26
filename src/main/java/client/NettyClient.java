@@ -60,6 +60,8 @@ public class NettyClient
         log.info("netty client send msg");
 
         NettyClientHandler handler = future.channel().pipeline().get(NettyClientHandler.class);
+
+        // todo 向服务端发送请求前织入一些配置，例如配置
         return handler.sendMsg(req);
     }
 }

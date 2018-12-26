@@ -18,53 +18,63 @@ import java.util.concurrent.TimeoutException;
  */
 public class ServiceImporter
 {
-    private Logger log= LoggerFactory.getLogger(this.getClass());
+    private Logger log = LoggerFactory.getLogger(this.getClass());
     private ServiceDiscovery serviceDiscovery;
-    private Map<String, NettyClient> nettyClientMap=new HashMap<>();
+    private Map<String, NettyClient> nettyClientMap = new HashMap<>();
 
-    // key 是由调用类的类名+service 类名组合而成
-    // 例如：向TopService 中注入TestService 服务，则key 为client.config.TopService-api.TestService
-    // 实现服务的每一个注入都可以灵活的设置属性
-    public Map<String, Map<String, Object>> serviceInjectPropMap = new HashMap<>();
+    private Map<String, Map<String, Object>> serviceInjectPropMap = new HashMap<>();
 
-    public ServiceImporter(ServiceDiscovery serviceDiscovery){
-        this.serviceDiscovery=serviceDiscovery;
+    public ServiceImporter(ServiceDiscovery serviceDiscovery)
+    {
+        this.serviceDiscovery = serviceDiscovery;
     }
 
+    /**
+     * 实现服务的每一个注入都可以灵活的设置属性
+     *
+     * @param key   由调用类的类名+service 类名组合而成
+     *              例如：向TopService 中注入TestService 服务，则key 为client.config.TopService-api.TestService
+     * @param attrs Map<String, Object> 属性列表（属性名-> String，属性值-> Object）
+     */
     public void addServiceInjectProp(String key , Map<String, Object> attrs)
     {
         if (serviceInjectPropMap.containsKey(key))
-            log.warn("Duplicate service ");
+            log.warn("Duplicate key[" + key + "] occurred !");
+        serviceInjectPropMap.put(key , attrs);
     }
 
     // todo netty client 什么时候停止，清理掉？设置一个超时清理？(清理连接，并不是清理nettyClient)
+    // todo InvocationHandler 可以缓存一下
     /**
      * create proxy class for specified service
+     *
      * @param clazz service class
      * @return proxy of service
      */
-    public Object importService(Class<?> clazz){
-        log.info("import service for "+clazz.getName());
+    public Object importService(Class<?> clazz)
+    {
+        log.info("import service for " + clazz.getName());
 
-        return  Proxy.newProxyInstance(
+        return Proxy.newProxyInstance(
                 clazz.getClassLoader() ,
                 new Class<?>[] {clazz} ,
                 (proxy , method , args) ->
                 {
-                    if(!nettyClientMap.containsKey(clazz.getName())){
+                    if (!nettyClientMap.containsKey(clazz.getName()))
+                    {
                         //get server url of service provider
-                        String serverUrl=serviceDiscovery.getServerUrlWithBalancing(clazz.getName());
-                        String[] url=serverUrl.split(":");
-                        String host=url[0];
+                        String serverUrl = serviceDiscovery.getServerUrlWithBalancing(clazz.getName());
+                        String[] url = serverUrl.split(":");
+                        String host = url[0];
                         int port = Integer.parseInt(url[1]);
-                        log.info("get server url:"+serverUrl);
+                        log.info("get server url:" + serverUrl);
 
                         // todo netty client 阻塞
                         NettyClient tmp = new NettyClient();
-                        tmp.connect(host, port);
-                        nettyClientMap.put(clazz.getName(), tmp);
+                        tmp.connect(host , port);
+                        nettyClientMap.put(clazz.getName() , tmp);
                     }
-                    NettyClient nettyClient=nettyClientMap.get(clazz.getName());
+                    NettyClient nettyClient = nettyClientMap.get(clazz.getName());
                     RequestBody req = new RequestBody();
                     req.setClassName(clazz.getName());
                     req.setMethodName(method.getName());
