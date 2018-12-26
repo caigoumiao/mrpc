@@ -22,13 +22,13 @@ public class ServiceDiscovery
         this(zkUrl, BalancingStrategy.RANDOM);
     }
 
+    // todo Bean 初始化 zookeeper 连接太慢了
     public ServiceDiscovery(String zkUrl, BalancingStrategy _strategy){
         log.info("init zookeeper client");
         this.strategy=_strategy;
         zkClient=new ZkClient(zkUrl);
     }
 
-    // todo server url 缓存一下 太慢了
     /**
      * return serverUrl of service provider with a Load Balancing Strategy
      * @param serviceName service name

@@ -13,5 +13,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD})
 public @interface MRpcInjection
 {
-    long timeOut = 2000;
+    // todo 对应着为指定的服务设置timeout
+    long timeOut() default 2000;
 }

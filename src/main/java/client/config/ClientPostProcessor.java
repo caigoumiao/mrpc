@@ -5,6 +5,7 @@ import client.ServiceImporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -21,6 +22,7 @@ import java.lang.reflect.Field;
 public class ClientPostProcessor implements BeanPostProcessor, ApplicationContextAware
 {
     private Logger log = LoggerFactory.getLogger(this.getClass());
+
     private ServiceImporter serviceImporter;
     private ApplicationContext applicationContext;
 
@@ -38,11 +40,12 @@ public class ClientPostProcessor implements BeanPostProcessor, ApplicationContex
         Field[] fields = bean.getClass().getDeclaredFields();
         for (Field field : fields)
         {
-            Annotation injectAnnotation = field.getAnnotation(MRpcInjection.class);
+            MRpcInjection injectAnnotation = field.getAnnotation(MRpcInjection.class);
             // 当字段被 @MRpcInjection 注解时，为此字段自动注入服务代理类
             if (injectAnnotation != null)
             {
                 // todo 解析注解上设置的信息
+                injectAnnotation.timeOut();
                 try
                 {
                     //

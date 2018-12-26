@@ -78,7 +78,6 @@ public class NettyClientHandler extends SimpleChannelInboundHandler<Object>
         });
         try
         {
-            // todo 设置请求超时时间，防止一直阻塞
             // todo 使用Future 改写
             // todo 判断返回结果是超时 or 成功， 若超时客户端需抛出异常
             boolean isTimeOut = latch.await(timeOut , TimeUnit.MILLISECONDS);

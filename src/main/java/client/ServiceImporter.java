@@ -25,9 +25,7 @@ public class ServiceImporter
         this.serviceDiscovery=serviceDiscovery;
     }
 
-    // todo netty client 需要缓存一下
     // todo netty client 什么时候停止，清理掉？设置一个超时清理？(清理连接，并不是清理nettyClient)
-    // todo proxy 缓存是否有必要？不能缓存
     /**
      * create proxy class for specified service
      * @param clazz service class
