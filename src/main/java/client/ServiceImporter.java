@@ -9,6 +9,7 @@ import java.lang.reflect.Proxy;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeoutException;
 
 
 /**
@@ -62,8 +63,16 @@ public class ServiceImporter
                     log.info("nettyClient begin to sendMsg");
 
                     // get result from ResponseBody
-                    ResponseBody response = nettyClient.sendMsg(req);
-                    return response.getBody();
+                    ResponseBody response = null;
+                    try
+                    {
+                        response = nettyClient.sendMsg(req);
+                        return response.getBody();
+                    } catch (TimeoutException e)
+                    {
+                        e.printStackTrace();
+                        return null;
+                    }
                 }
         );
     }

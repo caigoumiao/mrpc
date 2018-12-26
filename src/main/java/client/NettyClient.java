@@ -15,6 +15,8 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.TimeoutException;
+
 /**
  * @author larry miao
  * @date 2018-11-11
@@ -53,7 +55,7 @@ public class NettyClient
     }
 
     // todo 改为异步回调形式
-    public ResponseBody sendMsg(RequestBody req)
+    public ResponseBody sendMsg(RequestBody req) throws TimeoutException
     {
         log.info("netty client send msg");
 
