@@ -14,5 +14,5 @@ import java.lang.annotation.Target;
 public @interface MRpcInjection
 {
     // todo 对应着为指定的服务设置timeout
-    long timeOut() default 2000;
+    long timeout() default 2000;
 }

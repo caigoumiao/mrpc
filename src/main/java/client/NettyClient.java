@@ -73,6 +73,6 @@ public class NettyClient
 
         // todo 向服务端发送请求前织入一些配置，例如timeout
         // todo 属性名交给一些常量去管理
-        return handler.sendMsg(req , (Long) attrs.get("timeOut"));
+        return handler.sendMsg(req , (Long) attrs.get(MRpcInjectPropConstans.TIME_OUT));
     }
 }
